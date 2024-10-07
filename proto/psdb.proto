@@ -1,0 +1,77 @@
+syntax = "proto3";
+package psdb.v1alpha1;
+
+import "data.proto";
+import "query.proto";
+import "vtgate.proto";
+import "vtrpc.proto";
+
+option go_package = "github.com/planetscale/psdb/types/psdb/v1alpha1;psdbv1alpha1";
+
+message User {
+  string username = 1;
+  string psid = 2;
+  psdb.data.v1.Role role = 3;
+}
+
+message CreateSessionRequest {}
+
+message CreateSessionResponse {
+  string branch = 1;
+  User user = 2;
+  Session session = 4;
+}
+
+message ExecuteRequest {
+  Session session = 1;
+
+  string query = 2;
+  map<string, query.BindVariable> bind_variables = 3;
+}
+
+message ExecuteResponse {
+  Session session = 1;
+
+  query.QueryResult result = 2;
+  vtrpc.RPCError error = 3;
+
+  // optional timing, in seconds, for the response, if empty or 0, this wasn't set
+  // does not exist in the response from a StreamExecute.
+  double timing = 4;
+}
+
+message PrepareRequest {
+  Session session = 1;
+
+  string query = 2;
+  map<string, query.BindVariable> bind_variables = 3;
+}
+
+message PrepareResponse {
+  Session session = 1;
+
+  repeated query.Field fields = 2;
+  vtrpc.RPCError error = 3;
+}
+
+message CloseSessionRequest {
+  Session session = 1;
+}
+
+message CloseSessionResponse {
+  Session session = 1;
+  vtrpc.RPCError error = 2;
+}
+
+message Session {
+  bytes signature = 1;
+  vtgate.Session vitess_session = 2;
+}
+
+service Database {
+  rpc CreateSession(CreateSessionRequest) returns (CreateSessionResponse) {}
+  rpc Execute(ExecuteRequest) returns (ExecuteResponse) {}
+  rpc StreamExecute(ExecuteRequest) returns (stream ExecuteResponse) {}
+  rpc Prepare(PrepareRequest) returns (PrepareResponse) {}
+  rpc CloseSession(CloseSessionRequest) returns (CloseSessionResponse) {}
+}

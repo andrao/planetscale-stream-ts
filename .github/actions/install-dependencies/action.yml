@@ -1,0 +1,34 @@
+name: 'Install dependencies'
+description: 'Install PNPM & Node, install workspace dependencies'
+
+inputs:
+    ignore-scripts:
+        description: 'Whether to append the --ignore-scripts option to the pnpm install command'
+        required: false
+        default: false
+
+runs:
+    using: composite
+    steps:
+        # Install pnpm globally
+        - name: Install pnpm
+          uses: pnpm/action-setup@v3
+
+        # Install Node.js & establish pnpm cache
+        - name: Install Node.js
+          uses: actions/setup-node@v4
+          with:
+              node-version-file: .nvmrc
+              cache: pnpm
+
+        # Install repo dependencies
+        # - Note that boolean input gets treated as a string
+        - name: Install dependencies
+          if: ${{ inputs.ignore-scripts == 'false' }}
+          shell: bash
+          run: pnpm install --frozen-lockfile
+
+        - name: Install dependencies, ignore scripts
+          if: ${{ inputs.ignore-scripts == 'true' }}
+          shell: bash
+          run: pnpm install --frozen-lockfile --ignore-scripts
