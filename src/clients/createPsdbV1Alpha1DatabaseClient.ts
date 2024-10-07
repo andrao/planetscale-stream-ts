@@ -25,7 +25,6 @@ export function createPsdbV1Alpha1DatabaseClient({
 }): DatabaseClient {
     /**
      * Define the gRPC transport
-     * @see https://github.com/planetscale/airbyte-source/blob/v1.32.0/cmd/internal/planetscale_edge_database.go#L240-L247
      */
     const transport = createGrpcTransport({
         baseUrl: `https://${db_config.host}`,
@@ -37,7 +36,7 @@ export function createPsdbV1Alpha1DatabaseClient({
              * @see https://github.com/planetscale/psdb/blob/6848e728f6e7df7d69ff0b53d00309e2656db064/core/client/client.go#L42-L47
              *
              * - Auth is auth.NewBasicAuth
-             *   @see https://github.com/planetscale/airbyte-source/blob/v1.32.0/cmd/internal/planetscale_edge_database.go#L245
+             *   @see https://github.com/planetscale/psdb/blob/6848e728f6e7df7d69ff0b53d00309e2656db064/auth/auth.go#L59-L65
              * - auth.Type() value is "Basic"
              *   @see https://github.com/planetscale/psdb/blob/6848e728f6e7df7d69ff0b53d00309e2656db064/auth/auth.go#L26
              * - Basic auth uses base64 encoding of `username:password`
