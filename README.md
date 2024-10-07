@@ -32,7 +32,9 @@ Offers a method, `stream()`, which returns an async iterable for consuming messa
 
 Note that messages need to be [acknowledged](https://vitess.io/docs/20.0/reference/features/messaging/#acknowledging-messages), otherwise they will be redelivered. Use the `ack()` method to acknowledge messages.
 
-See the Vitess documentation on Vitess Messaging for information, including instructions on how to create a messaging table:
+This class uses PlanetScale’s [psdb gRPC API](https://github.com/planetscale/psdb/tree/main/proto-src/psdb), which is a slimmed down version of the Vitess [queryservice](https://github.com/vitessio/vitess/blob/main/proto/queryservice.proto). It’s an alpha API, without much documentation, whose purpose I’m unsure of, and which has not been publicized in any real way, so use with caution.
+
+See the Vitess documentation for more information on Vitess Messaging, including instructions on how to create a messaging table:
 
 -   [Features: Vitess Messaging](https://vitess.io/docs/20.0/reference/features/messaging)
 
@@ -100,7 +102,9 @@ for await (const { messages } of stream) {
 
 Offers a method, `stream()`, which returns an async iterable for consuming messages from a Vitess VStream.
 
-See the Vitess documentation on VStream for more information:
+This class uses the [psdbconnect gRPC API](https://github.com/planetscale/psdb/tree/main/proto-src/psdbconnect), which is used for e.g. the [Connect Airbyte adapter](https://github.com/planetscale/airbyte-source/tree/main). This API is in alpha, so use with caution.
+
+See the Vitess documentation for more information on VStream:
 
 -   [Concepts: VStream](https://vitess.io/docs/20.0/concepts/vstream/)
 -   [Reference: VStream](https://vitess.io/docs/20.0/reference/vreplication/vstream/)
