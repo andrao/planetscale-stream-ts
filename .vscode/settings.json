@@ -1,0 +1,41 @@
+{
+    "editor.codeActionsOnSave": {
+        "source.fixAll.eslint": "explicit"
+    },
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true,
+    "eslint.workingDirectories": [
+        {
+            "mode": "auto"
+        }
+    ],
+    "editor.tabSize": 4,
+    "files.autoSave": "onFocusChange",
+    "[github-actions-workflow]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[json]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[typescript]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[yaml]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "cSpell.words": [
+        "Airbyte",
+        "andrao",
+        "Autosize",
+        "lucide",
+        "nextjs",
+        "PlanetScale",
+        "Pulumi",
+        "redrive",
+        "shadcn",
+        "sonner",
+        "TRPC",
+        "typecheck",
+        "Vitess"
+    ]
+}

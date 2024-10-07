@@ -1,0 +1,195 @@
+# planetscale-stream-ts
+
+This package exports two classes for streaming data from a PlanetScale database:
+
+-   `PlanetScaleMessagingStream`: For reading a [Vitess Messaging](https://vitess.io/docs/20.0/reference/features/messaging/) stream
+-   `PlanetScaleVStream`: For reading a Vitess [VStream](https://vitess.io/docs/20.0/reference/vreplication/vstream/) (change data capture) stream
+
+---
+
+-   [PlanetScaleMessagingStream](#planetscalemessagingstream)
+    -   [Parameters](#parameters)
+        -   [Constructor](#constructor)
+        -   [Method: `stream()`](#method-stream)
+        -   [Method: `ack()`](#method-ack)
+    -   [Usage](#usage)
+-   [PlanetScaleVStream](#planetscalevstream)
+    -   [Parameters](#parameters-1)
+        -   [Constructor](#constructor-1)
+        -   [Method: `stream()`](#method-stream-1)
+    -   [Determining the starting cursor](#determining-the-starting-cursor)
+    -   [Usage](#usage-1)
+-   [Using the examples](#using-the-examples)
+
+---
+
+# PlanetScaleMessagingStream
+
+Offers a method, `stream()`, which returns an async iterable for consuming messages from a Vitess Messaging stream.
+
+Note that messages need to be [acknowledged](https://vitess.io/docs/20.0/reference/features/messaging/#acknowledging-messages), otherwise they will be redelivered. Use the `ack()` method to acknowledge messages.
+
+See the Vitess documentation on Vitess Messaging for information, including instructions on how to create a messaging table:
+
+-   [Features: Vitess Messaging](https://vitess.io/docs/20.0/reference/features/messaging)
+
+## Parameters
+
+### Constructor
+
+| Parameter            | Description                                                   |
+| :------------------- | :------------------------------------------------------------ |
+| `db_config`          | Database connection config                                    |
+| `db_config.host`     | PlanetScale host                                              |
+| `db_config.database` | PlanetScale database name                                     |
+| `db_config.username` | PlanetScale branch username                                   |
+| `db_config.password` | PlanetScale branch password                                   |
+| `table_name`         | The name of the messaging table from which to stream messages |
+| `table_primary_key`  | The name of the primary key field in the messaging table      |
+
+### Method: `stream()`
+
+The `stream()` method uses named parameters:
+
+| Parameter          | Description                                                                               |
+| :----------------- | :---------------------------------------------------------------------------------------- |
+| `read_duration_ms` | _(Optional)_ The duration for which the stream will be read. Omit to stream indefinitely. |
+
+### Method: `ack()`
+
+The `ack()` method uses one positional parameter:
+
+| Parameter | Description                                            |
+| :-------- | :----------------------------------------------------- |
+| `keys`    | An array of message primary key values to acknowledge. |
+
+## Usage
+
+```ts
+import { PlanetScaleMessagingStream } from 'planetscale-stream-ts';
+
+const messenger = new PlanetScaleMessagingStream({
+    db_config: {
+        host: 'aws.connect.psdb.cloud',
+        database: 'my_db',
+        username: 'my_user',
+        password: '<secret>',
+    },
+    table_name: 'my_message',
+    primary_key: 'id',
+});
+
+const stream = messenger.stream({ read_duration_ms: 30 * 1000 });
+
+for await (const { messages } of stream) {
+    // Log out messages
+    console.dir(messages, { depth: null });
+
+    // Acknowledge messages using primary key values
+    const keys = messages.map(r => r.id);
+    void messenger.ack(keys);
+}
+```
+
+---
+
+# PlanetScaleVStream
+
+Offers a method, `stream()`, which returns an async iterable for consuming messages from a Vitess VStream.
+
+See the Vitess documentation on VStream for more information:
+
+-   [Concepts: VStream](https://vitess.io/docs/20.0/concepts/vstream/)
+-   [Reference: VStream](https://vitess.io/docs/20.0/reference/vreplication/vstream/)
+
+## Parameters
+
+### Constructor
+
+Note that this `db_config` includes `use_replica` boolean.
+
+| Parameter               | Description                                        |
+| :---------------------- | :------------------------------------------------- |
+| `db_config`             | Database connection config                         |
+| `db_config.host`        | PlanetScale host                                   |
+| `db_config.database`    | PlanetScale database name                          |
+| `db_config.username`    | PlanetScale branch username                        |
+| `db_config.password`    | PlanetScale branch password                        |
+| `db_config.use_replica` | Whether to use the branch replica                  |
+| `table_name`            | The name of the table from which to stream changes |
+
+### Method: `stream()`
+
+The `stream()` method uses named parameters:
+
+| Parameter          | Description                                                                               |
+| :----------------- | :---------------------------------------------------------------------------------------- |
+| `starting_cursor`  | The table cursor to start streaming at.                                                   |
+| `read_duration_ms` | _(Optional)_ The duration for which the stream will be read. Omit to stream indefinitely. |
+| `stop_position`    | _(Optional)_ The vgtid position at which to stop.                                         |
+
+## Determining the starting cursor
+
+The `TableCursor` encodes the keyspace, shard, and GTID position from which the stream will begin.
+
+| Parameter  | Description                                    |
+| :--------- | :--------------------------------------------- |
+| `keyspace` | The keyspace from which to stream changes      |
+| `shard`    | The shard from which to stream changes         |
+| `position` | The GTID position from which to stream changes |
+
+The `position` parameter has two special values:
+
+-   `undefined`: Stream will start from the start of the binlog
+-   `"current"`: Stream will start from the current moment
+
+Keyspace and shard values can be found by querying the database:
+
+-   `show keyspaces`: Lists keyspaces
+-   `show vitess_shards`: Lists shards in each keyspace, using format `{keyspace}/{shard}`
+
+## Usage
+
+```ts
+import { PlanetScaleVStream, TableCursor } from 'planetscale-stream-ts';
+
+const vstream = new PlanetScaleVStream({
+    db_config: {
+        host: 'aws.connect.psdb.cloud',
+        database: 'my_db',
+        username: 'my_user',
+        password: '<secret>',
+        use_replica: true,
+    },
+    table_name: 'my_table',
+});
+
+const stream = vstream.stream({
+    starting_cursor: new TableCursor({
+        keyspace: 'my_keyspace',
+        shard: '-',
+        position: 'current',
+    }),
+    read_duration_ms: 30 * 1000,
+});
+
+for await (const { cursor, inserts, updates, deletes } of stream) {
+    // Log out stream cursor position
+    console.log('streamed up to:', cursor?.position);
+
+    // Log out changes
+    console.dir({ mod: 'INSERTS', data: inserts }, { depth: null });
+    console.dir({ mod: 'UPDATES', data: updates }, { depth: null });
+    console.dir({ mod: 'DELETES', data: deletes }, { depth: null });
+}
+```
+
+---
+
+# Using the examples
+
+This repository includes two example scripts, one for each class, in the _examples/_ folder.
+
+Before running an example, copy the _.env.example_ file to _.env_ and set the correct environment variables.
+
+Both of the examples require some configuration values to be set, indicated by the `@todo` comments.

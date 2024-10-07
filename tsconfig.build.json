@@ -1,0 +1,9 @@
+{
+    "extends": "@andrao/tsconfig/module.json",
+    "compilerOptions": {
+        "outDir": "./dist",
+        "tsBuildInfoFile": "./dist/tsconfig.tsbuildinfo"
+    },
+    "include": ["src"],
+    "exclude": ["node_modules"]
+}

@@ -1,0 +1,92 @@
+{
+    "name": "planetscale-stream-ts",
+    "version": "0.1.0",
+    "type": "module",
+    "exports": {
+        ".": "./dist/index.js"
+    },
+    "main": "./dist/index.js",
+    "files": [
+        "dist",
+        "package.json",
+        "README.md"
+    ],
+    "scripts": {
+        "build": "rm -rf ./dist && tsc -p tsconfig.build.json",
+        "clean": "rm -rf .node_modules",
+        "format": "pnpm exec prettier --check $PWD",
+        "generate": "buf generate",
+        "postgenerate": "pnpm run format --write",
+        "lint": "eslint .",
+        "lint:buf": "buf lint",
+        "messaging": "tsx ./examples/messaging.ts",
+        "prepack": "pnpm run build",
+        "test": "vitest run .",
+        "test:i": "RUN_INTEGRATION_TESTS=1 vitest run .",
+        "typecheck": "tsc --noEmit",
+        "vstream": "tsx ./examples/vstream.ts"
+    },
+    "prettier": "@andrao/prettier",
+    "eslintConfig": {
+        "extends": "./node_modules/@andrao/eslint/lib/base.js",
+        "root": true
+    },
+    "release": {
+        "branches": [
+            "main",
+            "next",
+            {
+                "name": "beta",
+                "prerelease": true
+            },
+            {
+                "name": "alpha",
+                "prerelease": true
+            }
+        ],
+        "plugins": [
+            "@semantic-release/commit-analyzer",
+            "@semantic-release/release-notes-generator",
+            "@semantic-release/npm",
+            "@semantic-release/github",
+            [
+                "@semantic-release/git",
+                {
+                    "assets": [
+                        "CHANGELOG.md",
+                        "package.json",
+                        "pnpm-lock.yaml"
+                    ],
+                    "message": "chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
+                }
+            ]
+        ]
+    },
+    "dependencies": {
+        "@bufbuild/protobuf": "^1.0.0",
+        "@connectrpc/connect": "^1.0.0",
+        "@connectrpc/connect-node": "^1.5.0"
+    },
+    "devDependencies": {
+        "@andrao/eslint": "2.1.1",
+        "@andrao/prettier": "1.0.2",
+        "@andrao/tsconfig": "1.0.0",
+        "@bufbuild/buf": "^1.44.0",
+        "@bufbuild/protoc-gen-es": "^1.0.0",
+        "@connectrpc/protoc-gen-connect-es": "^1.0.0",
+        "@semantic-release/git": "10.0.1",
+        "@t3-oss/env-nextjs": "0.11.1",
+        "@types/node": "20.12.2",
+        "chalk": "4.1.2",
+        "dotenv": "16.4.5",
+        "semantic-release": "23.0.6",
+        "tsx": "4.19.1",
+        "typescript": "5.6.2",
+        "vitest": "2.1.1",
+        "zod": "3.23.8"
+    },
+    "packageManager": "pnpm@9.10.0",
+    "engines": {
+        "node": ">=20"
+    }
+}

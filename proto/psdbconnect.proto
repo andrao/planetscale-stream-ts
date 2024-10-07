@@ -1,0 +1,105 @@
+syntax = "proto3";
+
+package psdbconnect.v1alpha1;
+
+import "query.proto";
+import "vtrpc.proto";
+
+option go_package = "github.com/planetscale/psdb/types/psdbconnect/v1alpha1;psdbconnectv1alpha1";
+
+
+// -----------------
+// CHANGES
+// vitess.query.V16.QueryResult -> query.QueryResult
+// -----------------
+
+//enumcheck:exhaustive
+enum TabletType {
+  // REPLICA replicates from primary. It is used to serve live traffic.
+  // A REPLICA can be promoted to PRIMARY. A demoted PRIMARY will go to REPLICA.
+  replica = 0;
+  // PRIMARY is the primary server for the shard. Only PRIMARY allows DMLs.
+  primary = 1;
+
+  // BATCH is used to serve traffic for
+  // long-running jobs. It is a separate type from REPLICA so
+  // long-running queries don't affect web-like traffic.
+  batch = 2;
+}
+
+// SyncRequest sets up the Sync session for a specific table in a keyspace, shard.
+message SyncRequest {
+  // The table name to Sync
+  string table_name = 1;
+  // Any known state of the table from the last time a sync was run.
+  TableCursor cursor = 2;
+  // Tablet to stream data from
+  TabletType tablet_type = 3;
+  // If true, any new data inserted into the table in table_name will be sent in the Sync session.
+  bool include_inserts = 4;
+  // If true, any updates to data in the table in table_name will be sent in the Sync session.
+  bool include_updates = 5;
+  // If true, any deletes to data in the table in table_name will be sent in the Sync session.
+  bool include_deletes = 6;
+  // A list of columns to include in the data from the table, an empty array means all columns.
+  // If a column is referenced here that isn't in the table's schema, the SyncRequest will fail.
+  repeated string columns = 7;
+  // if specified, these cells are used to pick source tablets from.
+  // defaults to the cell of the vtgate serving the VStream API.
+  repeated string cells = 8;
+}
+
+// DeletedRow denotes a row that is deleted from the table referenced in the SyncRequest
+message DeletedRow {
+  // This result will contain only the primary keys from the deleted row.
+  query.QueryResult result = 1;
+}
+
+// Updated denotes a row that is updated in the table referenced in the SyncRequest
+message UpdatedRow {
+  // All values of the table before the update was made.
+  query.QueryResult before = 1;
+  // All values of the table ater the update was made.
+  query.QueryResult after = 2;
+}
+
+// SyncResponse denotes a response to the SyncRequest
+message SyncResponse {
+  // An array of rows that denote inserts into the table.
+  repeated query.QueryResult result = 1;
+  // A state object to use that denotes the current state of the SyncResponse.
+  TableCursor cursor = 2;
+  // Any errors encountered in streaming data from the table.
+  vtrpc.RPCError error = 3;
+  // An array of rows that denote deletes from the table.
+  repeated DeletedRow deletes = 4;
+  // An array of rows that denote updates to the table.
+  repeated UpdatedRow updates = 5;
+}
+
+// TableCursor denotes state of a Sync request to a table.
+// This type can be round-tripped in a SyncRequest to pickup where the last Sync session left off.
+message TableCursor {
+  // The shard to sync data from.
+  string shard = 1;
+  // Keyspace within a shard where the table resides.
+  string keyspace = 2;
+  // Any known vgtid positions from the last a previous session.
+  // If this value is empty, the Sync request is treated as a request to
+  // download all data within a table in a shard.
+  // If this value is invalid, i.e. incorrect format or the binlogs have been purged,
+  // the SyncRequest will fail.
+  string position = 3;
+  // Any known last known primary key values from the a previous session.
+  query.QueryResult last_known_pk = 4;
+}
+
+service Connect {
+  // Sync will continuously stream data from a PlanetScale database given a table, keyspace and shard.
+  // Sync also allows you to incrementally sync data from a table given a TableCursor that is returned as part of the SyncResponse.
+  // If the last known position is empty, Sync will download all the rows for a given table in a shard
+  // and then wait to stream any changes to the table (inserts/updates/deletes)
+  // If the last known position is not empty, Sync will pickup where the last Sync session left off and stream
+  // any changes to the table since the last Sync session.
+  rpc Sync(SyncRequest) returns (stream SyncResponse) {}
+}
