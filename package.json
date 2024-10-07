@@ -22,7 +22,7 @@
         "README.md"
     ],
     "scripts": {
-        "build": "rm -rf ./dist && tsc -p tsconfig.build.json",
+        "build": "rm -rf ./dist && rm -f node_modules/.cache/tsbuildinfo.build.json && tsc -p tsconfig.build.json",
         "clean": "rm -rf .node_modules",
         "format": "pnpm exec prettier --check $PWD",
         "generate": "buf generate",
