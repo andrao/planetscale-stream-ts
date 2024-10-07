@@ -104,12 +104,15 @@ See the Vitess documentation on VStream for more information:
 
 -   [Concepts: VStream](https://vitess.io/docs/20.0/concepts/vstream/)
 -   [Reference: VStream](https://vitess.io/docs/20.0/reference/vreplication/vstream/)
+-   [Reference: Life of a Stream](https://vitess.io/docs/20.0/reference/vreplication/internal/life-of-a-stream/)
+-   [Reference: VStream Skew Minimization](https://vitess.io/docs/20.0/reference/vreplication/internal/vstream-skew-detection/)
+-   [Reference: VStream API and Resharding](https://vitess.io/docs/20.0/reference/vreplication/internal/vstream-stream-migration/)
 
 ## Parameters
 
 ### Constructor
 
-Note that this `db_config` includes `use_replica` boolean.
+Note that this `db_config` includes a `use_replica` boolean.
 
 | Parameter               | Description                                        |
 | :---------------------- | :------------------------------------------------- |
@@ -133,7 +136,7 @@ The `stream()` method uses named parameters:
 
 ## Determining the starting cursor
 
-The `TableCursor` encodes the keyspace, shard, and GTID position from which the stream will begin.
+The `TableCursor` encodes the keyspace, shard, and [GTID](https://dev.mysql.com/doc/refman/8.4/en/replication-gtids-concepts.html) position from which the stream will begin.
 
 | Parameter  | Description                                    |
 | :--------- | :--------------------------------------------- |
@@ -177,7 +180,7 @@ const stream = vstream.stream({
 });
 
 for await (const { cursor, inserts, updates, deletes } of stream) {
-    // Log out stream cursor position
+    // Log out stream cursor position (GTID)
     console.log('streamed up to:', cursor?.position);
 
     // Log out changes
