@@ -203,3 +203,10 @@ This repository includes two example scripts, one for each class, in the _exampl
 Before running an example, copy the _.env.example_ file to _.env_ and set the correct environment variables.
 
 Both of the examples require some configuration values to be set, indicated by the `@todo` comments.
+
+Run the examples using the scripts in _package.json_:
+
+-   `pnpm run messaging` runs the PlanetScale Messaging example
+    -   See _examples/messaging.ts_
+-   `pnpm run vstream` runs the PlanetScale VStream example
+    -   See _examples/vstream.ts_
