@@ -16,7 +16,7 @@ const DB_CONFIG = {
 };
 
 /**
- * @todo Enter stream config values
+ * @todo Enter VStream config values
  * @comment Use `current` for position to stream from the current point in time
  */
 const TABLE_NAME = '';

@@ -9,12 +9,10 @@ const DB_CONFIG = {
     database: env.PLANETSCALE_DATABASE,
     username: env.PLANETSCALE_USERNAME,
     password: env.PLANETSCALE_PASSWORD,
-    use_replica: false,
 };
 
 /**
- * @todo Enter stream config values
- * @comment Use `current` for position to stream from the current point in time
+ * @todo Enter Vitess Messaging config values
  */
 const TABLE_NAME = '';
 const TABLE_PRIMARY_KEY = 'id';
