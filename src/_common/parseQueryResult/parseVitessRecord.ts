@@ -1,4 +1,4 @@
-import { Type } from '../../__generated__/query_pb';
+import { Type } from '../../generated/query_pb';
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
@@ -8,18 +8,18 @@ import { Type } from '../../__generated__/query_pb';
 export function parseVitessRecord(
     record: Record<string, { typ: number; val: Uint8Array | undefined } | undefined>,
 ): Record<string, any> {
-    const parsedRecord: Record<string, any> = {};
+    const parsed_record: Record<string, any> = {};
 
     for (const [key, value] of Object.entries(record)) {
         if (value?.val === undefined) {
-            parsedRecord[key] = null;
+            parsed_record[key] = null;
         } else {
             // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-            parsedRecord[key] = decodeVitessValue(value.typ, value.val);
+            parsed_record[key] = decodeVitessValue(value.typ, value.val);
         }
     }
 
-    return parsedRecord;
+    return parsed_record;
 }
 
 /**

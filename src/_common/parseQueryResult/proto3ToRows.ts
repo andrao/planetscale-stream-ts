@@ -1,4 +1,4 @@
-import { Type, type Field, type Row } from '../../__generated__/query_pb';
+import { Type, type Field, type Row } from '../../generated/query_pb';
 
 export interface Value {
     typ: number;

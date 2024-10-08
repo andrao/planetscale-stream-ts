@@ -1,13 +1,13 @@
 import type { PromiseClient } from '@connectrpc/connect';
-import type { Connect } from '../__generated__/psdbconnect_connect';
-import { SyncRequest, TabletType, type TableCursor } from '../__generated__/psdbconnect_pb';
 import {
     createPsdbConnectV1Alpha1Client,
     type PlanetScaleConnectConfig,
 } from '../clients/createPsdbConnectV1Alpha1Client';
+import type { Connect } from '../generated/psdbconnect_connect';
+import { SyncRequest, TabletType, type TableCursor } from '../generated/psdbconnect_pb';
 import { parseResponse } from './parseResponse';
 
-export { TableCursor } from '../__generated__/psdbconnect_pb';
+export { TableCursor } from '../generated/psdbconnect_pb';
 
 interface IPlanetScaleVStreamConstructor {
     /**

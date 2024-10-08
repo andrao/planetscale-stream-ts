@@ -85,8 +85,8 @@ function mapSetValue(value: Value, values: Array<string>): Value {
  * @returns The mapped Value
  */
 function mapEnumValue(value: Value, values: Array<string>): Value {
-    const parsedValue = new TextDecoder().decode(value.val);
-    const index = parseInt(parsedValue, 10);
+    const parsed_value = new TextDecoder().decode(value.val);
+    const index = parseInt(parsed_value, 10);
 
     if (isNaN(index)) {
         return value;

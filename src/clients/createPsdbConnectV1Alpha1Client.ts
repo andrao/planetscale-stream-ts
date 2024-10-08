@@ -1,6 +1,6 @@
 import { createPromiseClient, type PromiseClient } from '@connectrpc/connect';
 import { createGrpcTransport } from '@connectrpc/connect-node';
-import { Connect } from '../__generated__/psdbconnect_connect';
+import { Connect } from '../generated/psdbconnect_connect';
 
 /**
  * @description Configures a PlanetScale database connection

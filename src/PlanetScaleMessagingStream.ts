@@ -1,16 +1,16 @@
-import {
-    CloseSessionRequest,
-    CreateSessionRequest,
-    ExecuteRequest,
-    type Session,
-} from './__generated__/psdb_pb';
-import { BindVariable, Type, Value, type Field } from './__generated__/query_pb';
 import { parseQueryResult } from './_common/parseQueryResult';
 import {
     createPsdbV1Alpha1DatabaseClient,
     type DatabaseClient,
     type PlanetScaleDatabaseConnectConfig,
 } from './clients/createPsdbV1Alpha1DatabaseClient';
+import {
+    CloseSessionRequest,
+    CreateSessionRequest,
+    ExecuteRequest,
+    type Session,
+} from './generated/psdb_pb';
+import { BindVariable, Type, Value, type Field } from './generated/query_pb';
 
 interface IPlanetScaleMessagingStreamConstructor<PK extends string> {
     /**

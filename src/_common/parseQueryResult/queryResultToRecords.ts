@@ -1,4 +1,4 @@
-import { type Field } from '../../__generated__/query_pb';
+import { type Field } from '../../generated/query_pb';
 import { parseValue } from './parseValue';
 import type { Value } from './proto3ToRows';
 

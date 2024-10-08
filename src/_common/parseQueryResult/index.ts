@@ -1,4 +1,4 @@
-import type { QueryResult } from '../../__generated__/query_pb';
+import type { QueryResult } from '../../generated/query_pb';
 import { parseVitessRecord } from './parseVitessRecord';
 import { proto3ToRows } from './proto3ToRows';
 import { queryResultToRecords } from './queryResultToRecords';

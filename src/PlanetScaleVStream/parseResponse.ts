@@ -1,10 +1,6 @@
-import {
-    type DeletedRow,
-    type SyncResponse,
-    type UpdatedRow,
-} from '../__generated__/psdbconnect_pb';
-import { type QueryResult } from '../__generated__/query_pb';
 import { parseQueryResult } from '../_common/parseQueryResult';
+import { type DeletedRow, type SyncResponse, type UpdatedRow } from '../generated/psdbconnect_pb';
+import { type QueryResult } from '../generated/query_pb';
 
 /**
  * @description Parses the response from the PlanetScale sync stream
