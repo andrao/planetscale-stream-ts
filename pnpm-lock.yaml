@@ -19,8 +19,8 @@ importers:
         version: 1.5.0(@bufbuild/protobuf@1.10.0)(@connectrpc/connect@1.5.0(@bufbuild/protobuf@1.10.0))
     devDependencies:
       '@andrao/eslint':
-        specifier: 2.1.1
-        version: 2.1.1(eslint@8.57.1)(prettier@3.3.3)(typescript@5.6.2)
+        specifier: 2.2.1
+        version: 2.2.1(eslint@8.57.1)(prettier@3.3.3)(typescript@5.6.2)
       '@andrao/prettier':
         specifier: 1.0.2
         version: 1.0.2
@@ -77,8 +77,8 @@ packages:
     resolution: {integrity: sha512-30iZtAPgz+LTIYoeivqYo853f02jBYSd5uGnGpkFV0M3xOt9aN73erkgYAmZU43x4VfqcnLxW9Kpg3R5LC4YYw==}
     engines: {node: '>=6.0.0'}
 
-  '@andrao/eslint@2.1.1':
-    resolution: {integrity: sha512-eOmpt9lWXGc8p3jGasPrkbhQJHS2J47ZRnPdsOY76DxRmiYHCnJTNj1ak0Bi/LYljtR4EWGcIwEX/auCh7ZR3A==}
+  '@andrao/eslint@2.2.1':
+    resolution: {integrity: sha512-srSnNj0Xxkv+1ihgtc6PYZyBZtSXLG56J/R9dkJE+nqmA1Zzm5e9eVCIy+UCDKSbrOESIZc6CiNRYL1ZdhELjA==}
 
   '@andrao/prettier@1.0.2':
     resolution: {integrity: sha512-5S+ayhLg4EeDb3NUad5jDsfld1E1mmTEv7+SQMruXUPWuaOY5zMVkv2H5Aze6PARs9z+6KUeaYzKrhe5eQhVhw==}
@@ -3623,7 +3623,7 @@ snapshots:
       '@jridgewell/gen-mapping': 0.3.5
       '@jridgewell/trace-mapping': 0.3.25
 
-  '@andrao/eslint@2.1.1(eslint@8.57.1)(prettier@3.3.3)(typescript@5.6.2)':
+  '@andrao/eslint@2.2.1(eslint@8.57.1)(prettier@3.3.3)(typescript@5.6.2)':
     dependencies:
       '@next/eslint-plugin-next': 14.2.14
       '@tanstack/eslint-plugin-query': 5.59.1(eslint@8.57.1)(typescript@5.6.2)

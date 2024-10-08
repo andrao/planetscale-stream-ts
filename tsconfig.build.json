@@ -5,5 +5,5 @@
         "tsBuildInfoFile": "node_modules/.cache/tsbuildinfo.build.json"
     },
     "include": ["src"],
-    "exclude": ["node_modules"]
+    "exclude": ["node_modules", "**/*.test.ts"]
 }
