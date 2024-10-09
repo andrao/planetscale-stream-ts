@@ -200,7 +200,7 @@ for await (const { cursor, inserts, updates, deletes } of stream) {
 
 This repository includes two example scripts, one for each class, in the _examples/_ folder.
 
-Before running an example, copy the _.env.example_ file to _.env_ and set the correct environment variables.
+Before running an example, copy the _.env.example_ file to _.env_ and set the correct environment variables. Don't forget to `pnpm install`.
 
 Both of the examples require some configuration values to be set, indicated by the `@todo` comments.
 
@@ -210,3 +210,23 @@ Run the examples using the scripts in _package.json_:
     -   See _examples/messaging.ts_
 -   `pnpm run vstream` runs the PlanetScale VStream example
     -   See _examples/vstream.ts_
+
+---
+
+# Protocol buffers
+
+## Sources
+
+The _psdb.proto_ and _psdbconnect.proto_ files in the _proto/_ directory have been copied in from the [planetscale/psdb](https://github.com/planetscale/psdb/tree/main/proto-src) repository.
+
+The rest of the _.proto_ files come from the [Vitess](https://github.com/vitessio/vitess/tree/main/proto) project.
+
+## Conversion to TypeScript
+
+TypeScript equivalents are generated using the [_@bufbuild/protoc-gen-es_](https://www.npmjs.com/package/@bufbuild/protoc-gen-es) package and the [_@connectrpc/protoc-gen-connect-es_](https://www.npmjs.com/package/@connectrpc/protoc-gen-connect-es) plugin. Code generation is configured in _buf.yaml_ and _buf.gen.yaml,_ and generated code is saved to _src/generated_.
+
+Run `pnpm run generate` to regenerate _src/generated._
+
+## API clients
+
+gRPC API clients for the two PlanetScale APIs are created using [_@connectrpc/connect_](https://www.npmjs.com/package/@connectrpc/connect) and [_@connectrpc/connect-node_](https://www.npmjs.com/package/@connectrpc/connect-node) packages in this repository's _src/clients_ directory.
