@@ -5,7 +5,7 @@ import { createEnv } from '@t3-oss/env-nextjs';
 import { parse } from 'dotenv';
 import { z } from 'zod';
 
-const ENV_FILE = path.resolve(import.meta.dirname, '../.env');
+const ENV_FILE = path.resolve(import.meta.dirname, '../../.env');
 const ENV_CONTENT = fs.existsSync(ENV_FILE) ? parse(fs.readFileSync(ENV_FILE, 'utf8')) : {};
 
 /**
