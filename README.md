@@ -16,13 +16,19 @@ This package exports two classes for streaming data from a PlanetScale database:
         -   [Method: `stream()`](#method-stream)
         -   [Method: `ack()`](#method-ack)
     -   [Usage](#usage)
+    -   [Example](#example)
 -   [PlanetScaleVStream](#planetscalevstream)
     -   [Parameters](#parameters-1)
         -   [Constructor](#constructor-1)
         -   [Method: `stream()`](#method-stream-1)
     -   [Determining the starting cursor](#determining-the-starting-cursor)
     -   [Usage](#usage-1)
+    -   [Example](#example-1)
 -   [Using the examples](#using-the-examples)
+-   [Protocol buffers](#protocol-buffers)
+    -   [Sources](#sources)
+    -   [Conversion to TypeScript](#conversion-to-typescript)
+    -   [API clients](#api-clients)
 
 ---
 
@@ -225,9 +231,7 @@ See the Example sections in the documentation above for screencaps of behaviour.
 
 ## Sources
 
-The _psdb.proto_ and _psdbconnect.proto_ files in the _proto/_ directory have been copied in from the [planetscale/psdb](https://github.com/planetscale/psdb/tree/main/proto-src) repository.
-
-The rest of the _.proto_ files come from the [Vitess](https://github.com/vitessio/vitess/tree/main/proto) project.
+The _.proto_ files in the _proto/psdb_ directory have been copied in from the [planetscale/psdb](https://github.com/planetscale/psdb/tree/main/proto-src) repository. Those in _proto/vitess_ come from [Vitess](https://github.com/vitessio/vitess/tree/main/proto).
 
 ## Conversion to TypeScript
 
@@ -237,4 +241,4 @@ Run `pnpm run generate` to regenerate _src/generated._
 
 ## API clients
 
-gRPC API clients for the two PlanetScale APIs are created using [_@connectrpc/connect_](https://www.npmjs.com/package/@connectrpc/connect) and [_@connectrpc/connect-node_](https://www.npmjs.com/package/@connectrpc/connect-node) packages in this repository's _src/clients_ directory.
+gRPC API clients for the two PlanetScale APIs are created in the _src/clients_ directory using [_@connectrpc/connect_](https://www.npmjs.com/package/@connectrpc/connect) and [_@connectrpc/connect-node_](https://www.npmjs.com/package/@connectrpc/connect-node).

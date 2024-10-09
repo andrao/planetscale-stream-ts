@@ -1,7 +1,8 @@
 # For details on buf.yaml configuration, visit https://buf.build/docs/configuration/v2/buf-yaml
 version: v2
 modules:
-    - path: proto
+    - path: proto/psdb
+    - path: proto/vitess
 lint:
     use:
         - STANDARD
