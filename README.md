@@ -96,6 +96,10 @@ for await (const { messages } of stream) {
 }
 ```
 
+## Example
+
+<video src='https://github.com/user-attachments/assets/85a82b4c-0f78-4960-a1a7-ec4c591ec6b5' width=360></video>
+
 ---
 
 # PlanetScaleVStream
@@ -194,22 +198,26 @@ for await (const { cursor, inserts, updates, deletes } of stream) {
 }
 ```
 
+## Example
+
+<video src='https://github.com/user-attachments/assets/7a08a4aa-86ff-46e2-a3f3-43be94dda14b' width=360></video>
+
 ---
 
 # Using the examples
 
 This repository includes two example scripts, one for each class, in the _examples/_ folder.
 
-Before running an example, copy the _.env.example_ file to _.env_ and set the correct environment variables. Don't forget to `pnpm install`.
+Before running an example, copy the _.env.example_ file to _.env_ and set the correct environment variables. Both of the examples additionally require some configuration values to be set in the files themselves, indicated by the `@todo` comments.
 
-Both of the examples require some configuration values to be set, indicated by the `@todo` comments.
-
-Run the examples using the scripts in _package.json_:
+After running `pnpm install`, run the examples using the scripts in _package.json_:
 
 -   `pnpm run messaging` runs the PlanetScale Messaging example
     -   See _examples/messaging.ts_
 -   `pnpm run vstream` runs the PlanetScale VStream example
     -   See _examples/vstream.ts_
+
+See the Example sections in the documentation above for screencaps of behaviour.
 
 ---
 
