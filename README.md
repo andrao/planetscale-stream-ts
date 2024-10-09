@@ -144,29 +144,31 @@ The `stream()` method uses named parameters:
 
 | Parameter          | Description                                                                               |
 | :----------------- | :---------------------------------------------------------------------------------------- |
-| `starting_cursor`  | The table cursor to start streaming at.                                                   |
+| `starting_cursor`  | The table cursor from which the stream will be read.                                      |
 | `read_duration_ms` | _(Optional)_ The duration for which the stream will be read. Omit to stream indefinitely. |
-| `stop_position`    | _(Optional)_ The vgtid position at which to stop.                                         |
+| `stop_position`    | _(Optional)_ The VGtid position at which to stop.                                         |
 
 ## Determining the starting cursor
 
-The `TableCursor` encodes the keyspace, shard, and [GTID](https://dev.mysql.com/doc/refman/8.4/en/replication-gtids-concepts.html) position from which the stream will begin.
+The `TableCursor` encodes the keyspace, shard, and [VGtid](https://vitess.io/docs/20.0/reference/vreplication/vstream/#vgtid) position from which the stream will begin.
 
-| Parameter  | Description                                    |
-| :--------- | :--------------------------------------------- |
-| `keyspace` | The keyspace from which to stream changes      |
-| `shard`    | The shard from which to stream changes         |
-| `position` | The GTID position from which to stream changes |
+| Parameter  | Description                                      |
+| :--------- | :----------------------------------------------- |
+| `keyspace` | The keyspace from which to stream changes.       |
+| `shard`    | The shard from which to stream changes.          |
+| `position` | The VGtid position from which to stream changes. |
 
 The `position` parameter has two special values:
 
 -   `undefined`: Stream will start from the start of the binlog
+    -   PlanetScale retains binlog records for 3 days, by default
+        -   Run `SHOW VARIABLES LIKE 'binlog_expire_logs_seconds'` to confirm
 -   `"current"`: Stream will start from the current moment
 
 Keyspace and shard values can be found by querying the database:
 
--   `show keyspaces`: Lists keyspaces
--   `show vitess_shards`: Lists shards in each keyspace, using format `{keyspace}/{shard}`
+-   `SHOW KEYSPACES`: Lists keyspaces
+-   `SHOW VITESS_SHARDS`: Lists shards in each keyspace, using format `{keyspace}/{shard}`
 
 ## Usage
 
@@ -194,7 +196,7 @@ const stream = vstream.stream({
 });
 
 for await (const { cursor, inserts, updates, deletes } of stream) {
-    // Log out stream cursor position (GTID)
+    // Log out stream cursor position (VGtid)
     console.log('streamed up to:', cursor?.position);
 
     // Log out changes
@@ -214,7 +216,7 @@ for await (const { cursor, inserts, updates, deletes } of stream) {
 
 This repository includes two example scripts, one for each class, in the _examples/_ folder.
 
-Before running an example, copy the _.env.example_ file to _.env_ and set the correct environment variables. Both of the examples additionally require some configuration values to be set in the files themselves, indicated by the `@todo` comments.
+Before running an example, copy the _.env.template_ file to _.env_ and set the correct environment variables. Both of the examples additionally require some configuration values to be set in the files themselves, indicated by the `@todo` comments.
 
 After running `pnpm install`, run the examples using the scripts in _package.json_:
 
