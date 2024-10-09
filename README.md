@@ -81,7 +81,7 @@ const messenger = new PlanetScaleMessagingStream({
         password: '<secret>',
     },
     table_name: 'my_message',
-    primary_key: 'id',
+    table_primary_key: 'id',
 });
 
 const stream = messenger.stream({ read_duration_ms: 30 * 1000 });
