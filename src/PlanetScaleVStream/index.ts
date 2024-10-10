@@ -79,6 +79,12 @@ export class PlanetScaleVStream {
                     raw_response: res,
 
                     /**
+                     * @property error
+                     * @description Any error encountered in streaming data from the table
+                     */
+                    error: res.error,
+
+                    /**
                      * @property cursor
                      * @description The cursor position up to which changes have been streamed
                      */

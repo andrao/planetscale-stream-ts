@@ -109,7 +109,7 @@ export class PlanetScaleMessagingStream<PK extends string> {
             let fields: Array<Field> | null = null;
 
             for await (const res of stream) {
-                const { result } = res;
+                const { result, error } = res;
                 const { rows: result_rows, fields: result_fields } = result ?? {};
 
                 // Set fields in state
@@ -135,6 +135,12 @@ export class PlanetScaleMessagingStream<PK extends string> {
                          * @description The raw response from the `stream * from {table_name}` query
                          */
                         raw_response: res,
+
+                        /**
+                         * @property error
+                         * @description Any error encountered in streaming data from the table
+                         */
+                        error,
 
                         /**
                          * @property messages
