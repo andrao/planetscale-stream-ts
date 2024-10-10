@@ -47,12 +47,14 @@ try {
 
     console.log('[ VSTREAM STARTED ]');
 
-    for await (const { cursor, inserts, updates, deletes } of stream) {
+    for await (const { cursor, inserts, updates, deletes, error } of stream) {
         console.log(chalk.grey('-->', cursor?.position));
 
         for (const insert of inserts) console.log(chalk.green('[ INSERT ]\n'), insert);
         for (const update of updates) console.log(chalk.blue('[ UPDATE ]\n'), update);
         for (const del of deletes) console.log(chalk.red('[ DELETE ]\n'), del);
+
+        if (error) console.error('\n[ ERROR ]:', error);
     }
 
     process.exit();

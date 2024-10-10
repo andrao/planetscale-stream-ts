@@ -92,9 +92,12 @@ const messenger = new PlanetScaleMessagingStream({
 
 const stream = messenger.stream({ read_duration_ms: 30 * 1000 });
 
-for await (const { messages } of stream) {
+for await (const { messages, error } of stream) {
     // Log out messages
     console.dir(messages, { depth: null });
+
+    // Log out error
+    if (error) console.error(error);
 
     // Acknowledge messages using primary key values
     const keys = messages.map(r => r.id);
@@ -195,7 +198,7 @@ const stream = vstream.stream({
     read_duration_ms: 30 * 1000,
 });
 
-for await (const { cursor, inserts, updates, deletes } of stream) {
+for await (const { cursor, inserts, updates, deletes, error } of stream) {
     // Log out stream cursor position (VGtid)
     console.log('streamed up to:', cursor?.position);
 
@@ -203,6 +206,9 @@ for await (const { cursor, inserts, updates, deletes } of stream) {
     console.dir({ mod: 'INSERTS', data: inserts }, { depth: null });
     console.dir({ mod: 'UPDATES', data: updates }, { depth: null });
     console.dir({ mod: 'DELETES', data: deletes }, { depth: null });
+
+    // Log out error
+    if (error) console.error(error);
 }
 ```
 

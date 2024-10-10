@@ -34,10 +34,13 @@ try {
 
     console.log('[ MESSAGING STREAM STARTED ]');
 
-    for await (const { messages } of stream) {
+    for await (const { messages, error } of stream) {
         console.log('\nmessages:');
         console.dir(messages, { depth: null });
 
+        if (error) console.error('\n[ ERROR ]:', error);
+
+        // Acknowledge messages
         const ids = messages.map(r => r.id);
         void messenger.ack(ids).then(({ n }) => console.info(`acknowledged ${n} message(s)`));
     }
