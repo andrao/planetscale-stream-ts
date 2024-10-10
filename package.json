@@ -1,6 +1,13 @@
 {
     "name": "planetscale-stream-ts",
     "version": "1.0.1",
+    "description": "Run Vitess VStream & Messaging streams on PlanetScale instances, in Typescript.",
+    "keywords": [
+        "planetscale",
+        "vitess",
+        "vstream",
+        "messaging"
+    ],
     "homepage": "https://github.com/andrao/planetscale-stream-ts#readme",
     "bugs": {
         "url": "https://github.com/andrao/planetscale-stream-ts/issues"
