@@ -49,6 +49,11 @@ export class PlanetScaleMessagingStream<PK extends string> {
         this.db_config = db_config;
         this.table_name = table_name;
         this.table_primary_key = table_primary_key;
+
+        if (!table_name)
+            throw new Error(`PlanetScaleMessagingStream ERROR: table_name must be defined`);
+        if (!table_primary_key)
+            throw new Error(`PlanetScaleMessagingStream ERROR: table_primary_key must be defined`);
     }
 
     private getClient() {

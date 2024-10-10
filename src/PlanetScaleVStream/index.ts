@@ -35,6 +35,8 @@ export class PlanetScaleVStream {
         this.db_config = db_config;
         this.table_name = table_name;
         this.client = createPsdbConnectV1Alpha1Client({ db_config });
+
+        if (!table_name) throw new Error(`PlanetScaleVStream ERROR: table_name must be defined`);
     }
 
     /**
