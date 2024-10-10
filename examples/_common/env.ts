@@ -19,8 +19,7 @@ const ENV_FILE_VARS = {
 };
 
 /**
- * @const env
- * @description Environment variables for the NextJS app
+ * @description Environment variables for the examples
  * @see https://vercel.com/docs/projects/environment-variables/system-environment-variables for default Vercel env vars
  */
 export const env = createEnv({

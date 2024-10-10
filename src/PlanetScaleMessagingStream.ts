@@ -49,6 +49,11 @@ export class PlanetScaleMessagingStream<PK extends string> {
         this.db_config = db_config;
         this.table_name = table_name;
         this.table_primary_key = table_primary_key;
+
+        if (!table_name)
+            throw new Error(`PlanetScaleMessagingStream ERROR: table_name must be defined`);
+        if (!table_primary_key)
+            throw new Error(`PlanetScaleMessagingStream ERROR: table_primary_key must be defined`);
     }
 
     private getClient() {
@@ -104,7 +109,7 @@ export class PlanetScaleMessagingStream<PK extends string> {
             let fields: Array<Field> | null = null;
 
             for await (const res of stream) {
-                const { result } = res;
+                const { result, error } = res;
                 const { rows: result_rows, fields: result_fields } = result ?? {};
 
                 // Set fields in state
@@ -130,6 +135,12 @@ export class PlanetScaleMessagingStream<PK extends string> {
                          * @description The raw response from the `stream * from {table_name}` query
                          */
                         raw_response: res,
+
+                        /**
+                         * @property error
+                         * @description Any error encountered in streaming data from the table
+                         */
+                        error,
 
                         /**
                          * @property messages

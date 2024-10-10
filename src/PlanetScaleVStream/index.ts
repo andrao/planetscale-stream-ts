@@ -35,6 +35,8 @@ export class PlanetScaleVStream {
         this.db_config = db_config;
         this.table_name = table_name;
         this.client = createPsdbConnectV1Alpha1Client({ db_config });
+
+        if (!table_name) throw new Error(`PlanetScaleVStream ERROR: table_name must be defined`);
     }
 
     /**
@@ -75,6 +77,12 @@ export class PlanetScaleVStream {
                      * @description The raw response from the sync stream
                      */
                     raw_response: res,
+
+                    /**
+                     * @property error
+                     * @description Any error encountered in streaming data from the table
+                     */
+                    error: res.error,
 
                     /**
                      * @property cursor
