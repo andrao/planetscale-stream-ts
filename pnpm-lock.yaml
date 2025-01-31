@@ -8,9 +8,6 @@ importers:
 
   .:
     dependencies:
-      '@buf/connectrpc_eliza.bufbuild_es':
-        specifier: ^2.2.3-20230913231627-233fca715f49.1
-        version: 2.2.3-20230913231627-233fca715f49.1(@bufbuild/protobuf@2.2.3)
       '@buf/planetscale_psdb.bufbuild_es':
         specifier: ^2.2.3-20250114195708-395df058569d.1
         version: 2.2.3-20250114195708-395df058569d.1(@bufbuild/protobuf@2.2.3)
@@ -133,11 +130,6 @@ packages:
   '@babel/types@7.26.7':
     resolution: {integrity: sha512-t8kDRGrKXyp6+tjUh7hw2RLyclsW4TRoRvRHtSyAX9Bb5ldlFh+90YAYY6awRXrlB4G5G2izNeGySpATlFzmOg==}
     engines: {node: '>=6.9.0'}
-
-  '@buf/connectrpc_eliza.bufbuild_es@2.2.3-20230913231627-233fca715f49.1':
-    resolution: {tarball: https://buf.build/gen/npm/v1/@buf/connectrpc_eliza.bufbuild_es/-/connectrpc_eliza.bufbuild_es-2.2.3-20230913231627-233fca715f49.1.tgz}
-    peerDependencies:
-      '@bufbuild/protobuf': ^2.2.3
 
   '@buf/planetscale_psdb.bufbuild_es@2.2.3-20250114195708-395df058569d.1':
     resolution: {tarball: https://buf.build/gen/npm/v1/@buf/planetscale_psdb.bufbuild_es/-/planetscale_psdb.bufbuild_es-2.2.3-20250114195708-395df058569d.1.tgz}
@@ -3946,10 +3938,6 @@ snapshots:
     dependencies:
       '@babel/helper-string-parser': 7.25.9
       '@babel/helper-validator-identifier': 7.25.9
-
-  '@buf/connectrpc_eliza.bufbuild_es@2.2.3-20230913231627-233fca715f49.1(@bufbuild/protobuf@2.2.3)':
-    dependencies:
-      '@bufbuild/protobuf': 2.2.3
 
   '@buf/planetscale_psdb.bufbuild_es@2.2.3-20250114195708-395df058569d.1(@bufbuild/protobuf@2.2.3)':
     dependencies:

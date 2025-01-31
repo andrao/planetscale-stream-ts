@@ -1,107 +1,106 @@
 {
-    "name": "planetscale-stream-ts",
-    "version": "1.1.1-alpha.1",
-    "description": "Run Vitess VStream & Messaging streams on PlanetScale instances, in Typescript.",
-    "keywords": [
-        "planetscale",
-        "vitess",
-        "vstream",
-        "messaging"
+  "name": "planetscale-stream-ts",
+  "version": "1.1.1-alpha.1",
+  "description": "Run Vitess VStream & Messaging streams on PlanetScale instances, in Typescript.",
+  "keywords": [
+    "planetscale",
+    "vitess",
+    "vstream",
+    "messaging"
+  ],
+  "homepage": "https://github.com/andrao/planetscale-stream-ts#readme",
+  "bugs": {
+    "url": "https://github.com/andrao/planetscale-stream-ts/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/andrao/planetscale-stream-ts.git"
+  },
+  "license": "MIT",
+  "author": "andrao",
+  "type": "module",
+  "exports": {
+    ".": "./dist/index.js"
+  },
+  "main": "./dist/index.js",
+  "files": [
+    "dist",
+    "package.json",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "rm -rf ./dist && rm -f node_modules/.cache/tsbuildinfo.build.json && tsc -p tsconfig.build.json",
+    "clean": "rm -rf .node_modules",
+    "format": "pnpm exec prettier --check $PWD",
+    "lint": "eslint .",
+    "messaging": "tsx ./examples/messaging.ts",
+    "prepack": "pnpm run build",
+    "test": "vitest run .",
+    "test:i": "RUN_INTEGRATION_TESTS=1 vitest run .",
+    "typecheck": "tsc --noEmit",
+    "vstream": "tsx ./examples/vstream.ts"
+  },
+  "prettier": "@andrao/prettier",
+  "eslintConfig": {
+    "extends": "./node_modules/@andrao/eslint/lib/base.js",
+    "root": true
+  },
+  "release": {
+    "branches": [
+      "main",
+      "next",
+      {
+        "name": "beta",
+        "prerelease": true
+      },
+      {
+        "name": "alpha",
+        "prerelease": true
+      }
     ],
-    "homepage": "https://github.com/andrao/planetscale-stream-ts#readme",
-    "bugs": {
-        "url": "https://github.com/andrao/planetscale-stream-ts/issues"
-    },
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/andrao/planetscale-stream-ts.git"
-    },
-    "license": "MIT",
-    "author": "andrao",
-    "type": "module",
-    "exports": {
-        ".": "./dist/index.js"
-    },
-    "main": "./dist/index.js",
-    "files": [
-        "dist",
-        "package.json",
-        "README.md"
-    ],
-    "scripts": {
-        "build": "rm -rf ./dist && rm -f node_modules/.cache/tsbuildinfo.build.json && tsc -p tsconfig.build.json",
-        "clean": "rm -rf .node_modules",
-        "format": "pnpm exec prettier --check $PWD",
-        "lint": "eslint .",
-        "messaging": "tsx ./examples/messaging.ts",
-        "prepack": "pnpm run build",
-        "test": "vitest run .",
-        "test:i": "RUN_INTEGRATION_TESTS=1 vitest run .",
-        "typecheck": "tsc --noEmit",
-        "vstream": "tsx ./examples/vstream.ts"
-    },
-    "prettier": "@andrao/prettier",
-    "eslintConfig": {
-        "extends": "./node_modules/@andrao/eslint/lib/base.js",
-        "root": true
-    },
-    "release": {
-        "branches": [
-            "main",
-            "next",
-            {
-                "name": "beta",
-                "prerelease": true
-            },
-            {
-                "name": "alpha",
-                "prerelease": true
-            }
-        ],
-        "plugins": [
-            "@semantic-release/commit-analyzer",
-            "@semantic-release/release-notes-generator",
-            "@semantic-release/npm",
-            "@semantic-release/github",
-            [
-                "@semantic-release/git",
-                {
-                    "assets": [
-                        "CHANGELOG.md",
-                        "package.json",
-                        "pnpm-lock.yaml"
-                    ],
-                    "message": "chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
-                }
-            ]
-        ]
-    },
-    "dependencies": {
-        "@buf/connectrpc_eliza.bufbuild_es": "^2.2.3-20230913231627-233fca715f49.1",
-        "@buf/planetscale_psdb.bufbuild_es": "^2.2.3-20250114195708-395df058569d.1",
-        "@buf/planetscale_vitess.bufbuild_es": "^2.2.3-20250102225135-15fcdcc799f4.1",
-        "@bufbuild/protobuf": "^2.2.3",
-        "@connectrpc/connect": "^2.0.1",
-        "@connectrpc/connect-node": "^2.0.1"
-    },
-    "devDependencies": {
-        "@andrao/eslint": "2.2.2",
-        "@andrao/prettier": "1.0.3",
-        "@andrao/tsconfig": "1.0.0",
-        "@semantic-release/git": "10.0.1",
-        "@t3-oss/env-nextjs": "0.11.1",
-        "@types/node": "20.12.2",
-        "chalk": "4.1.2",
-        "dotenv": "16.4.5",
-        "semantic-release": "23.0.6",
-        "tsx": "4.19.1",
-        "typescript": "5.7.3",
-        "vite": "6.0.11",
-        "vitest": "3.0.4",
-        "zod": "3.23.8"
-    },
-    "packageManager": "pnpm@9.12.1",
-    "engines": {
-        "node": ">=20"
-    }
+    "plugins": [
+      "@semantic-release/commit-analyzer",
+      "@semantic-release/release-notes-generator",
+      "@semantic-release/npm",
+      "@semantic-release/github",
+      [
+        "@semantic-release/git",
+        {
+          "assets": [
+            "CHANGELOG.md",
+            "package.json",
+            "pnpm-lock.yaml"
+          ],
+          "message": "chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
+        }
+      ]
+    ]
+  },
+  "dependencies": {
+    "@buf/planetscale_psdb.bufbuild_es": "^2.2.3-20250114195708-395df058569d.1",
+    "@buf/planetscale_vitess.bufbuild_es": "^2.2.3-20250102225135-15fcdcc799f4.1",
+    "@bufbuild/protobuf": "^2.2.3",
+    "@connectrpc/connect": "^2.0.1",
+    "@connectrpc/connect-node": "^2.0.1"
+  },
+  "devDependencies": {
+    "@andrao/eslint": "2.2.2",
+    "@andrao/prettier": "1.0.3",
+    "@andrao/tsconfig": "1.0.0",
+    "@semantic-release/git": "10.0.1",
+    "@t3-oss/env-nextjs": "0.11.1",
+    "@types/node": "20.12.2",
+    "chalk": "4.1.2",
+    "dotenv": "16.4.5",
+    "semantic-release": "23.0.6",
+    "tsx": "4.19.1",
+    "typescript": "5.7.3",
+    "vite": "6.0.11",
+    "vitest": "3.0.4",
+    "zod": "3.23.8"
+  },
+  "packageManager": "pnpm@9.12.1",
+  "engines": {
+    "node": ">=20"
+  }
 }
