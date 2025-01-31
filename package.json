@@ -84,8 +84,8 @@
         "@connectrpc/connect-node": "^2.0.1"
     },
     "devDependencies": {
-        "@andrao/eslint": "2.2.1",
-        "@andrao/prettier": "1.0.2",
+        "@andrao/eslint": "2.2.2",
+        "@andrao/prettier": "1.0.3",
         "@andrao/tsconfig": "1.0.0",
         "@semantic-release/git": "10.0.1",
         "@t3-oss/env-nextjs": "0.11.1",
@@ -94,8 +94,9 @@
         "dotenv": "16.4.5",
         "semantic-release": "23.0.6",
         "tsx": "4.19.1",
-        "typescript": "5.6.2",
-        "vitest": "2.1.1",
+        "typescript": "5.7.3",
+        "vite": "6.0.11",
+        "vitest": "3.0.4",
         "zod": "3.23.8"
     },
     "packageManager": "pnpm@9.12.1",
