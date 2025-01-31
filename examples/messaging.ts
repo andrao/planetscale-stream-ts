@@ -1,5 +1,5 @@
-import { PlanetScaleMessagingStream } from '../src/PlanetScaleMessagingStream';
-import { env } from './_common/env';
+import { PlanetScaleMessagingStream } from '../src/PlanetScaleMessagingStream.js';
+import { env } from './_common/env.js';
 
 /**
  * @todo Set DB config in .env file

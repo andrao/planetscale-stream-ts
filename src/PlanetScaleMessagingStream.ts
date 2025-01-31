@@ -11,12 +11,12 @@ import {
     type Field,
 } from '@buf/planetscale_vitess.bufbuild_es/vitess/query/v19/query_pb';
 import { create } from '@bufbuild/protobuf';
-import { parseQueryResult } from './_common/parseQueryResult';
+import { parseQueryResult } from './_common/parseQueryResult/index.js';
 import {
     createPsdbV1Alpha1DatabaseClient,
     type DatabaseClient,
     type PlanetScaleDatabaseConnectConfig,
-} from './clients/createPsdbV1Alpha1DatabaseClient';
+} from './clients/createPsdbV1Alpha1DatabaseClient.js';
 
 interface IPlanetScaleMessagingStreamConstructor<PK extends string> {
     /** @description PlanetScale database config */

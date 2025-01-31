@@ -1,2 +1,2 @@
-export * from './PlanetScaleMessagingStream';
-export * from './PlanetScaleVStream';
+export * from './PlanetScaleMessagingStream.js';
+export * from './PlanetScaleVStream/index.js';

@@ -1,6 +1,6 @@
 import { type Field } from '@buf/planetscale_vitess.bufbuild_es/vitess/query/v19/query_pb';
-import { parseValue } from './parseValue';
-import type { Value } from './proto3ToRows';
+import { parseValue } from './parseValue.js';
+import type { Value } from './proto3ToRows.js';
 
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 
