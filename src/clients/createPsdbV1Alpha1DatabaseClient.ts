@@ -1,6 +1,6 @@
-import { createPromiseClient, type PromiseClient } from '@connectrpc/connect';
+import { Database } from '@buf/planetscale_psdb.bufbuild_es/psdb/v1alpha1/database_pb';
+import { createClient, type Client } from '@connectrpc/connect';
 import { createGrpcTransport } from '@connectrpc/connect-node';
-import { Database } from '../generated/psdb_connect';
 
 /**
  * @description Configures a PlanetScale database connection
@@ -13,7 +13,7 @@ export interface PlanetScaleDatabaseConnectConfig {
     password: string;
 }
 
-export type DatabaseClient = PromiseClient<typeof Database>;
+export type DatabaseClient = Client<typeof Database>;
 
 /**
  * @description Creates a psdb.v1alpha1.Database client for a PlanetScale database
@@ -28,7 +28,6 @@ export function createPsdbV1Alpha1DatabaseClient({
      */
     const transport = createGrpcTransport({
         baseUrl: `https://${db_config.host}`,
-        httpVersion: '2',
         nodeOptions: { rejectUnauthorized: true },
         interceptors: [
             /**
@@ -56,5 +55,5 @@ export function createPsdbV1Alpha1DatabaseClient({
     /**
      * Create Connect client
      */
-    return createPromiseClient(Database, transport);
+    return createClient(Database, transport);
 }

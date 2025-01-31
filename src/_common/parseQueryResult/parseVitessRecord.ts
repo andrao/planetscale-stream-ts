@@ -1,4 +1,4 @@
-import { Type } from '../../generated/query_pb';
+import { Type } from '@buf/planetscale_vitess.bufbuild_es/vitess/query/v19/query_pb';
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 

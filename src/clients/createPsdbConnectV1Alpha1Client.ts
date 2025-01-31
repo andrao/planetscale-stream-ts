@@ -1,6 +1,6 @@
-import { createPromiseClient, type PromiseClient } from '@connectrpc/connect';
+import { Connect } from '@buf/planetscale_psdb.bufbuild_es/psdbconnect/v1alpha1/connect_pb';
+import { createClient, type Client } from '@connectrpc/connect';
 import { createGrpcTransport } from '@connectrpc/connect-node';
-import { Connect } from '../generated/psdbconnect_connect';
 
 /**
  * @description Configures a PlanetScale database connection
@@ -14,6 +14,8 @@ export interface PlanetScaleConnectConfig {
     use_replica: boolean;
 }
 
+export type IConnectClient = Client<typeof Connect>;
+
 /**
  * @description Creates a psdbconnect.v1alpha1.Connect client for a PlanetScale database
  */
@@ -21,14 +23,13 @@ export function createPsdbConnectV1Alpha1Client({
     db_config,
 }: {
     db_config: PlanetScaleConnectConfig;
-}): PromiseClient<typeof Connect> {
+}): IConnectClient {
     /**
      * Define the gRPC transport
      * @see https://github.com/planetscale/airbyte-source/blob/v1.32.0/cmd/internal/planetscale_edge_database.go#L240-L247
      */
     const transport = createGrpcTransport({
         baseUrl: `https://${db_config.host}`,
-        httpVersion: '2',
         nodeOptions: { rejectUnauthorized: true },
         interceptors: [
             /**
@@ -56,5 +57,5 @@ export function createPsdbConnectV1Alpha1Client({
     /**
      * Create Connect client
      */
-    return createPromiseClient(Connect, transport);
+    return createClient(Connect, transport);
 }
