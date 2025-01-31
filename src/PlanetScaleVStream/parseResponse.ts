@@ -1,6 +1,10 @@
+import {
+    type DeletedRow,
+    type SyncResponse,
+    type UpdatedRow,
+} from '@buf/planetscale_psdb.bufbuild_es/psdbconnect/v1alpha1/connect_pb';
+import { type QueryResult } from '@buf/planetscale_vitess.bufbuild_es/vitess/query/v19/query_pb';
 import { parseQueryResult } from '../_common/parseQueryResult';
-import { type DeletedRow, type SyncResponse, type UpdatedRow } from '../generated/psdbconnect_pb';
-import { type QueryResult } from '../generated/query_pb';
 
 /**
  * @description Parses the response from the PlanetScale sync stream

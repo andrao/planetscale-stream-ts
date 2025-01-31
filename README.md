@@ -5,30 +5,30 @@
 
 This package exports two classes for streaming data from a PlanetScale database:
 
--   `PlanetScaleMessagingStream`: For reading a [Vitess Messaging](https://vitess.io/docs/20.0/reference/features/messaging/) stream
--   `PlanetScaleVStream`: For reading a Vitess [VStream](https://vitess.io/docs/20.0/reference/vreplication/vstream/) (change data capture) stream
+- `PlanetScaleMessagingStream`: For reading a [Vitess Messaging](https://vitess.io/docs/20.0/reference/features/messaging/) stream
+- `PlanetScaleVStream`: For reading a Vitess [VStream](https://vitess.io/docs/20.0/reference/vreplication/vstream/) (change data capture) stream
 
 ---
 
--   [PlanetScaleMessagingStream](#planetscalemessagingstream)
-    -   [Parameters](#parameters)
-        -   [Constructor](#constructor)
-        -   [Method: `stream()`](#method-stream)
-        -   [Method: `ack()`](#method-ack)
-    -   [Usage](#usage)
-    -   [Example](#example)
--   [PlanetScaleVStream](#planetscalevstream)
-    -   [Parameters](#parameters-1)
-        -   [Constructor](#constructor-1)
-        -   [Method: `stream()`](#method-stream-1)
-    -   [Determining the starting cursor](#determining-the-starting-cursor)
-    -   [Usage](#usage-1)
-    -   [Example](#example-1)
--   [Using the examples](#using-the-examples)
--   [Protocol buffers](#protocol-buffers)
-    -   [Sources](#sources)
-    -   [Conversion to TypeScript](#conversion-to-typescript)
-    -   [API clients](#api-clients)
+- [PlanetScaleMessagingStream](#planetscalemessagingstream)
+    - [Parameters](#parameters)
+        - [Constructor](#constructor)
+        - [Method: `stream()`](#method-stream)
+        - [Method: `ack()`](#method-ack)
+    - [Usage](#usage)
+    - [Example](#example)
+- [PlanetScaleVStream](#planetscalevstream)
+    - [Parameters](#parameters-1)
+        - [Constructor](#constructor-1)
+        - [Method: `stream()`](#method-stream-1)
+    - [Determining the starting cursor](#determining-the-starting-cursor)
+    - [Usage](#usage-1)
+    - [Example](#example-1)
+- [Using the examples](#using-the-examples)
+- [Protocol buffers](#protocol-buffers)
+    - [Sources](#sources)
+    - [Conversion to TypeScript](#conversion-to-typescript)
+    - [API clients](#api-clients)
 
 ---
 
@@ -42,7 +42,7 @@ This class uses PlanetScale’s [psdb gRPC API](https://github.com/planetscale/p
 
 See the Vitess documentation for more information on Vitess Messaging, including instructions on how to create a messaging table:
 
--   [Features: Vitess Messaging](https://vitess.io/docs/20.0/reference/features/messaging)
+- [Features: Vitess Messaging](https://vitess.io/docs/20.0/reference/features/messaging)
 
 ## Parameters
 
@@ -119,11 +119,11 @@ This class uses the [psdbconnect gRPC API](https://github.com/planetscale/psdb/t
 
 See the Vitess documentation for more information on VStream:
 
--   [Concepts: VStream](https://vitess.io/docs/20.0/concepts/vstream/)
--   [Reference: VStream](https://vitess.io/docs/20.0/reference/vreplication/vstream/)
--   [Reference: Life of a Stream](https://vitess.io/docs/20.0/reference/vreplication/internal/life-of-a-stream/)
--   [Reference: VStream Skew Minimization](https://vitess.io/docs/20.0/reference/vreplication/internal/vstream-skew-detection/)
--   [Reference: VStream API and Resharding](https://vitess.io/docs/20.0/reference/vreplication/internal/vstream-stream-migration/)
+- [Concepts: VStream](https://vitess.io/docs/20.0/concepts/vstream/)
+- [Reference: VStream](https://vitess.io/docs/20.0/reference/vreplication/vstream/)
+- [Reference: Life of a Stream](https://vitess.io/docs/20.0/reference/vreplication/internal/life-of-a-stream/)
+- [Reference: VStream Skew Minimization](https://vitess.io/docs/20.0/reference/vreplication/internal/vstream-skew-detection/)
+- [Reference: VStream API and Resharding](https://vitess.io/docs/20.0/reference/vreplication/internal/vstream-stream-migration/)
 
 ## Parameters
 
@@ -163,20 +163,20 @@ The `TableCursor` encodes the keyspace, shard, and [VGtid](https://vitess.io/doc
 
 The `position` parameter has two special values:
 
--   `undefined`: Stream will start from the start of the binlog
-    -   PlanetScale retains binlog records for 3 days, by default
-        -   Run `SHOW VARIABLES LIKE 'binlog_expire_logs_seconds'` to confirm
--   `"current"`: Stream will start from the current moment
+- `undefined`: Stream will start from the start of the binlog
+    - PlanetScale retains binlog records for 3 days, by default
+        - Run `SHOW VARIABLES LIKE 'binlog_expire_logs_seconds'` to confirm
+- `"current"`: Stream will start from the current moment
 
 Keyspace and shard values can be found by querying the database:
 
--   `SHOW KEYSPACES`: Lists keyspaces
--   `SHOW VITESS_SHARDS`: Lists shards in each keyspace, using format `{keyspace}/{shard}`
+- `SHOW KEYSPACES`: Lists keyspaces
+- `SHOW VITESS_SHARDS`: Lists shards in each keyspace, using format `{keyspace}/{shard}`
 
 ## Usage
 
 ```ts
-import { PlanetScaleVStream, TableCursor } from 'planetscale-stream-ts';
+import { PlanetScaleVStream } from 'planetscale-stream-ts';
 
 const vstream = new PlanetScaleVStream({
     db_config: {
@@ -190,11 +190,11 @@ const vstream = new PlanetScaleVStream({
 });
 
 const stream = vstream.stream({
-    starting_cursor: new TableCursor({
+    starting_cursor: {
         keyspace: 'my_keyspace',
         shard: '-',
         position: 'current',
-    }),
+    },
     read_duration_ms: 30 * 1000,
 });
 
@@ -226,27 +226,17 @@ Before running an example, copy the _.env.template_ file to _.env_ and set the c
 
 After running `pnpm install`, run the examples using the scripts in _package.json_:
 
--   `pnpm run messaging` runs the PlanetScale Messaging example
-    -   See _examples/messaging.ts_
--   `pnpm run vstream` runs the PlanetScale VStream example
-    -   See _examples/vstream.ts_
+- `pnpm run messaging` runs the PlanetScale Messaging example
+    - See _examples/messaging.ts_
+- `pnpm run vstream` runs the PlanetScale VStream example
+    - See _examples/vstream.ts_
 
 See the Example sections in the documentation above for screencaps of behaviour.
 
 ---
 
-# Protocol buffers
-
-## Sources
-
-The _.proto_ files in the _proto/psdb_ directory have been copied in from the [planetscale/psdb](https://github.com/planetscale/psdb/tree/main/proto-src) repository. Those in _proto/vitess_ come from [Vitess](https://github.com/vitessio/vitess/tree/main/proto).
-
-## Conversion to TypeScript
-
-TypeScript equivalents are generated using the [_@bufbuild/protoc-gen-es_](https://www.npmjs.com/package/@bufbuild/protoc-gen-es) package and the [_@connectrpc/protoc-gen-connect-es_](https://www.npmjs.com/package/@connectrpc/protoc-gen-connect-es) plugin. Code generation is configured in _buf.yaml_ and _buf.gen.yaml,_ and generated code is saved to _src/generated_.
-
-Run `pnpm run generate` to regenerate _src/generated._
-
-## API clients
+# PlanetScale API sources
 
 gRPC API clients for the two PlanetScale APIs are created in the _src/clients_ directory using [_@connectrpc/connect_](https://www.npmjs.com/package/@connectrpc/connect) and [_@connectrpc/connect-node_](https://www.npmjs.com/package/@connectrpc/connect-node).
+
+Protobuf schemas are sourced from the [Buf Schema Registry](https://buf.build/docs/bsr/introduction/).

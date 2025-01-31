@@ -1,24 +1,28 @@
-import type { PromiseClient } from '@connectrpc/connect';
+import {
+    SyncRequestSchema,
+    TableCursorSchema,
+    TabletType,
+} from '@buf/planetscale_psdb.bufbuild_es/psdbconnect/v1alpha1/connect_pb';
+import { create } from '@bufbuild/protobuf';
 import {
     createPsdbConnectV1Alpha1Client,
+    type IConnectClient,
     type PlanetScaleConnectConfig,
 } from '../clients/createPsdbConnectV1Alpha1Client';
-import type { Connect } from '../generated/psdbconnect_connect';
-import { SyncRequest, TabletType, type TableCursor } from '../generated/psdbconnect_pb';
 import { parseResponse } from './parseResponse';
 
-export { TableCursor } from '../generated/psdbconnect_pb';
-
 interface IPlanetScaleVStreamConstructor {
-    /**
-     * @description PlanetScale database config
-     */
+    /** @description PlanetScale database config */
     db_config: PlanetScaleConnectConfig;
 
-    /**
-     * @description Table name to stream
-     */
+    /** @description Table name to stream */
     table_name: string;
+}
+
+interface ITableCursor {
+    keyspace: string;
+    shard: string;
+    position: string;
 }
 
 /**
@@ -29,7 +33,7 @@ export class PlanetScaleVStream {
     readonly db_config: IPlanetScaleVStreamConstructor['db_config'];
     readonly table_name: IPlanetScaleVStreamConstructor['table_name'];
 
-    private client: PromiseClient<typeof Connect>;
+    private client: IConnectClient;
 
     constructor({ db_config, table_name }: IPlanetScaleVStreamConstructor) {
         this.db_config = db_config;
@@ -50,18 +54,17 @@ export class PlanetScaleVStream {
     async *stream(options: {
         read_duration_ms?: number;
         stop_position?: string;
-        starting_cursor: TableCursor;
+        starting_cursor: ITableCursor;
     }) {
         const { read_duration_ms, stop_position, starting_cursor } = options;
 
-        const request = new SyncRequest({
+        const request = create(SyncRequestSchema, {
             tableName: this.table_name,
-            cursor: starting_cursor,
+            cursor: create(TableCursorSchema, starting_cursor),
             tabletType: this.db_config.use_replica ? TabletType.replica : TabletType.primary,
             includeInserts: true,
             includeUpdates: true,
             includeDeletes: true,
-            columns: [],
         });
 
         // Init stream, and iterate through results
@@ -114,9 +117,25 @@ export class PlanetScaleVStream {
             }
         } catch (error) {
             console.error('stream() [ ERROR ]', error);
-            console.error(`stream() [ ERROR ] REQUEST:`, request.toJson());
+            console.error(`stream() [ ERROR ] REQUEST:`, request);
 
             throw error;
         }
+    }
+}
+
+/**
+ * @description Instantiate a TableCursor
+ * @deprecated No need to use class in PlanetScaleVStream.starting_cursor, just pass in cursor config directly
+ */
+export class TableCursor implements ITableCursor {
+    readonly keyspace: ITableCursor['keyspace'];
+    readonly shard: ITableCursor['shard'];
+    readonly position: ITableCursor['position'];
+
+    constructor(cursor: ITableCursor) {
+        this.keyspace = cursor.keyspace;
+        this.shard = cursor.shard;
+        this.position = cursor.position;
     }
 }

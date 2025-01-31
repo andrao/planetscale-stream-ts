@@ -1,31 +1,31 @@
+import {
+    CloseSessionRequestSchema,
+    CreateSessionRequestSchema,
+    ExecuteRequestSchema,
+    type Session,
+} from '@buf/planetscale_psdb.bufbuild_es/psdb/v1alpha1/database_pb';
+import {
+    BindVariableSchema,
+    Type,
+    ValueSchema,
+    type Field,
+} from '@buf/planetscale_vitess.bufbuild_es/vitess/query/v19/query_pb';
+import { create } from '@bufbuild/protobuf';
 import { parseQueryResult } from './_common/parseQueryResult';
 import {
     createPsdbV1Alpha1DatabaseClient,
     type DatabaseClient,
     type PlanetScaleDatabaseConnectConfig,
 } from './clients/createPsdbV1Alpha1DatabaseClient';
-import {
-    CloseSessionRequest,
-    CreateSessionRequest,
-    ExecuteRequest,
-    type Session,
-} from './generated/psdb_pb';
-import { BindVariable, Type, Value, type Field } from './generated/query_pb';
 
 interface IPlanetScaleMessagingStreamConstructor<PK extends string> {
-    /**
-     * @description PlanetScale database config
-     */
+    /** @description PlanetScale database config */
     db_config: PlanetScaleDatabaseConnectConfig;
 
-    /**
-     * @description Messaging table name from which to stream
-     */
+    /** @description Messaging table name from which to stream */
     table_name: string;
 
-    /**
-     * @description The primary key of the messaging table
-     */
+    /** @description The primary key of the messaging table */
     table_primary_key: PK;
 }
 
@@ -69,11 +69,13 @@ export class PlanetScaleMessagingStream<PK extends string> {
         const client = this.getClient();
 
         // Create session
-        const { session } = await client.createSession(new CreateSessionRequest());
+        const { session } = await client.createSession(create(CreateSessionRequestSchema, {}));
         if (!session) throw new Error('initSession() ERROR: no session');
 
         // Set client workload
-        await client.execute(new ExecuteRequest({ query: 'set WORKLOAD=OLAP;', session: session }));
+        await client.execute(
+            create(ExecuteRequestSchema, { query: 'set WORKLOAD=OLAP;', session }),
+        );
 
         // Close session on SIGINT
         process.on('SIGINT', () => {
@@ -95,7 +97,7 @@ export class PlanetScaleMessagingStream<PK extends string> {
          */
         const { client, session } = await this.initSession();
         const stream = client.streamExecute(
-            new ExecuteRequest({
+            create(ExecuteRequestSchema, {
                 query: `stream * from ${this.table_name}`,
                 session,
             }),
@@ -175,12 +177,11 @@ export class PlanetScaleMessagingStream<PK extends string> {
                 `PlanetScaleMessagingStream.ack() [ ERROR ] must run .stream() and receive field data before calling .ack()`,
             );
 
-        const key_values = keys.map(
-            k =>
-                new Value({
-                    type: primary_key_field.type,
-                    value: new Uint8Array(Buffer.from(k.toString(10), 'ascii')),
-                }),
+        const key_values = keys.map(k =>
+            create(ValueSchema, {
+                type: primary_key_field.type,
+                value: new Uint8Array(Buffer.from(k.toString(10), 'ascii')),
+            }),
         );
 
         /**
@@ -189,7 +190,7 @@ export class PlanetScaleMessagingStream<PK extends string> {
         const client = this.getClient();
 
         const invalidate_result = await client.execute(
-            new ExecuteRequest({
+            create(ExecuteRequestSchema, {
                 query: [
                     `update ${this.table_name} set`,
                     `time_acked = UNIX_TIMESTAMP(NOW(6)) * 1000000000,`,
@@ -197,7 +198,10 @@ export class PlanetScaleMessagingStream<PK extends string> {
                     `where ${this.table_primary_key} in ::keys and time_acked is null`,
                 ].join(' '),
                 bindVariables: {
-                    keys: new BindVariable({ type: Type.TUPLE, values: key_values }),
+                    keys: create(BindVariableSchema, {
+                        type: Type.TUPLE,
+                        values: key_values,
+                    }),
                 },
             }),
         );
@@ -233,7 +237,7 @@ async function closeSession({
     if (!session) return;
 
     try {
-        await client.closeSession(new CloseSessionRequest({ session }));
+        await client.closeSession(create(CloseSessionRequestSchema, { session }));
         console.log(`PlanetScaleMessagingStream [ INFO ] closed session`);
     } catch (error) {
         console.error('PlanetScaleMessagingStream closeSession() [ ERROR ]', error);
