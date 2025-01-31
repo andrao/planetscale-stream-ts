@@ -1,7 +1,7 @@
 import type { QueryResult } from '@buf/planetscale_vitess.bufbuild_es/vitess/query/v19/query_pb';
-import { parseVitessRecord } from './parseVitessRecord';
-import { proto3ToRows } from './proto3ToRows';
-import { queryResultToRecords } from './queryResultToRecords';
+import { parseVitessRecord } from './parseVitessRecord.js';
+import { proto3ToRows } from './proto3ToRows.js';
+import { queryResultToRecords } from './queryResultToRecords.js';
 
 /**
  * @description Parses a query result into JS records

@@ -1,4 +1,4 @@
-import type { Value } from './proto3ToRows';
+import type { Value } from './proto3ToRows.js';
 
 /**
  * @description Parses a value based on its column type

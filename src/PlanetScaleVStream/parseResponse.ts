@@ -4,7 +4,7 @@ import {
     type UpdatedRow,
 } from '@buf/planetscale_psdb.bufbuild_es/psdbconnect/v1alpha1/connect_pb';
 import { type QueryResult } from '@buf/planetscale_vitess.bufbuild_es/vitess/query/v19/query_pb';
-import { parseQueryResult } from '../_common/parseQueryResult';
+import { parseQueryResult } from '../_common/parseQueryResult/index.js';
 
 /**
  * @description Parses the response from the PlanetScale sync stream
