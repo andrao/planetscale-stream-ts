@@ -1,7 +1,7 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import chalk from 'chalk';
-import { PlanetScaleVStream } from '../src/PlanetScaleVStream';
-import { env } from './_common/env';
+import { PlanetScaleVStream } from '../src/PlanetScaleVStream/index.js';
+import { env } from './_common/env.js';
 
 /**
  * @todo Set DB config in .env file

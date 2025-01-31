@@ -8,8 +8,8 @@ import {
     createPsdbConnectV1Alpha1Client,
     type IConnectClient,
     type PlanetScaleConnectConfig,
-} from '../clients/createPsdbConnectV1Alpha1Client';
-import { parseResponse } from './parseResponse';
+} from '../clients/createPsdbConnectV1Alpha1Client.js';
+import { parseResponse } from './parseResponse.js';
 
 interface IPlanetScaleVStreamConstructor {
     /** @description PlanetScale database config */
