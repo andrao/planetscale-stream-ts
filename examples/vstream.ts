@@ -1,6 +1,5 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import chalk from 'chalk';
-import { TableCursor } from '../src/generated/psdbconnect_pb';
 import { PlanetScaleVStream } from '../src/PlanetScaleVStream';
 import { env } from './_common/env';
 
@@ -24,7 +23,7 @@ const KEYSPACE = '';
 const SHARD = '-';
 const POSITION = 'current';
 const STOP_POSITION: string | undefined = undefined;
-const READ_DURATION_MS = 20 * 1000;
+const READ_DURATION_MS = 0; // Set to 0 to stream indefinitely
 
 /**
  * Run stream
@@ -36,11 +35,11 @@ try {
     });
 
     const stream = vstream.stream({
-        starting_cursor: new TableCursor({
+        starting_cursor: {
             keyspace: KEYSPACE,
             shard: SHARD,
             position: POSITION,
-        }),
+        },
         stop_position: STOP_POSITION,
         read_duration_ms: READ_DURATION_MS,
     });

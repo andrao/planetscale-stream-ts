@@ -16,7 +16,7 @@ const DB_CONFIG = {
  */
 const TABLE_NAME = '';
 const TABLE_PRIMARY_KEY = 'id';
-const READ_DURATION_MS = 20 * 1000;
+const READ_DURATION_MS = 0; // Set to 0 to stream indefinitely
 
 /**
  * Run stream
