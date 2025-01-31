@@ -1,4 +1,8 @@
-import { Type, type Field, type Row } from '../../generated/query_pb';
+import {
+    Type,
+    type Field,
+    type Row,
+} from '@buf/planetscale_vitess.bufbuild_es/vitess/query/v19/query_pb';
 
 export interface Value {
     typ: number;

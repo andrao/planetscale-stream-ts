@@ -1,4 +1,4 @@
-import { type Field } from '../../generated/query_pb';
+import { type Field } from '@buf/planetscale_vitess.bufbuild_es/vitess/query/v19/query_pb';
 import { parseValue } from './parseValue';
 import type { Value } from './proto3ToRows';
 

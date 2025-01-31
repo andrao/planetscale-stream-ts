@@ -32,10 +32,7 @@
         "build": "rm -rf ./dist && rm -f node_modules/.cache/tsbuildinfo.build.json && tsc -p tsconfig.build.json",
         "clean": "rm -rf .node_modules",
         "format": "pnpm exec prettier --check $PWD",
-        "generate": "buf generate",
-        "postgenerate": "pnpm run format --write",
         "lint": "eslint .",
-        "lint:buf": "buf lint",
         "messaging": "tsx ./examples/messaging.ts",
         "prepack": "pnpm run build",
         "test": "vitest run .",
@@ -80,17 +77,17 @@
         ]
     },
     "dependencies": {
-        "@bufbuild/protobuf": "^1.0.0",
-        "@connectrpc/connect": "^1.0.0",
-        "@connectrpc/connect-node": "^1.5.0"
+        "@buf/connectrpc_eliza.bufbuild_es": "^2.2.3-20230913231627-233fca715f49.1",
+        "@buf/planetscale_psdb.bufbuild_es": "^2.2.3-20250114195708-395df058569d.1",
+        "@buf/planetscale_vitess.bufbuild_es": "^2.2.3-20250102225135-15fcdcc799f4.1",
+        "@bufbuild/protobuf": "^2.2.3",
+        "@connectrpc/connect": "^2.0.1",
+        "@connectrpc/connect-node": "^2.0.1"
     },
     "devDependencies": {
         "@andrao/eslint": "2.2.1",
         "@andrao/prettier": "1.0.2",
         "@andrao/tsconfig": "1.0.0",
-        "@bufbuild/buf": "^1.44.0",
-        "@bufbuild/protoc-gen-es": "^1.0.0",
-        "@connectrpc/protoc-gen-connect-es": "^1.0.0",
         "@semantic-release/git": "10.0.1",
         "@t3-oss/env-nextjs": "0.11.1",
         "@types/node": "20.12.2",
